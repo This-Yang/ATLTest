@@ -8,11 +8,34 @@ import "oaidl.idl";
 import "ocidl.idl";
 
 [
-	uuid(9bb09634-6743-4d98-a512-d8b66764f71c),
-	version(1.0),
+    object,
+    uuid(2DC2E1D0-596B-4BB1-9C84-67026A1D4326),  // 接口的唯一标识符
+    dual,                                         // 支持IDispatch和vtable调用
+    nonextensible,                               // 不允许扩展接口
+    pointer_default(unique)                      // 指针默认为unique
 ]
-library ATLProject1Lib
+interface ICalculator : IDispatch                // 定义计算器接口，继承自IDispatch
 {
-	importlib("stdole2.tlb");
+    [id(1)] HRESULT Add([in] double a, [in] double b, [out, retval] double* result);     // 加法函数
+    [id(2)] HRESULT Subtract([in] double a, [in] double b, [out, retval] double* result); // 减法函数  
+    [id(3)] HRESULT Multiply([in] double a, [in] double b, [out, retval] double* result); // 乘法函数
+    [id(4)] HRESULT Divide([in] double a, [in] double b, [out, retval] double* result);   // 除法函数
+};
+
+[
+    uuid(AC030552-3F39-4DF5-A522-A85989AC3919),  // 类型库的唯一标识符
+    version(1.0),                                // 版本号
+]
+library ATLProject1Lib                           // 定义类型库
+{
+    importlib("stdole2.tlb");                    // 导入标准类型库
+
+    [
+        uuid(8662A82A-0D93-4DB1-8AB8-37A0C44A4DA1), // 组件类的唯一标识符
+    ]
+    coclass Calculator                           // 定义组件类
+    {
+        [default] interface ICalculator;         // 默认接口
+    };
 };
 
